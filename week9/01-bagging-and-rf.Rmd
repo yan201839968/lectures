@@ -43,7 +43,7 @@ test_X <- dataset[test_indices,-31]
 test_y <- as.vector(dataset[test_indices,31])
 
 # Making the label a factor for the randomForest package
-training_dataset$class <- factor(training_dataset$class)
+training_dataset$class <- factor(training_dataset$class) #randomforest automatically knows if it is a regression or classification problem
 test_y <- factor(test_y)
 ```
 
@@ -124,6 +124,7 @@ confusionMatrix(data = test_y, reference = test_y_hat_rf, positive = "1")
 auc(roc(test_y, test_y_hat_prob_rf))
 ```
 
+*better than bagging model and gives higher accuracy, sensitivity and specificity*
 
 Variable importance in trees:
 
@@ -131,6 +132,8 @@ Variable importance in trees:
 varImpPlot(model_rf, main = "Variable importance")
 importance(model_rf)
 ```
+
+*if features are correlated, another feature will take over even when most important feature is excluded > not to take x value of variable importance too seriously*
 
 __Addendum: Limitations of these variable importance measures__
 

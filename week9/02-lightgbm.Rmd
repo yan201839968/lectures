@@ -46,7 +46,7 @@ This carries with it, however, that we need to signal to the algorithm which col
 dataset <- lgb.convert_with_rules(data = dataset)$data %>% as.matrix()
      
 # In dataset with categoricals, add the feature names here
-categoricals <- c()
+categoricals <- c() # need to specify which features are categorical (transforms from numeric)
 
 # Training dataset
 training_dataset <- lgb.Dataset(data = dataset[training_indices,-ncol(dataset)],
@@ -186,6 +186,7 @@ random_search_lgbm <- function(parameter_values_fixed,
     search_output[ii, "learning_rate"] <- exp(runif(1, min = -4.6, max = -0.7)) 
     
     search_output[ii, "num_leaves"] <- round(runif(1, min = 2, max = 200))
+                                        # round to achieve integer values
     search_output[ii, "max_depth"] <- round(runif(1, min = 1, max = 30))
     search_output[ii, "feature_fraction"] <- runif(1, min = 0, max = 1)
     search_output[ii, "bagging_fraction"] <- runif(1, min = 0, max = 1)
@@ -244,6 +245,8 @@ random_search_output <- random_search_lgbm(parameter_values_fixed = parameter_va
                                            n_draws = 200,
                                            training_dataset = training_dataset,
                                            seed_int = 474)
+
+# if we find the best parameters are close to our boundary min and max values set, need to increase/decrease grid search to see if there are better score outside currently chosen space
 ```
 
 
